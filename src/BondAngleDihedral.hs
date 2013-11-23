@@ -21,13 +21,14 @@ main = do
   let fileList = lines files
       zyx      = map (take 4) $ map reverse fileList -- dull but works -> to filter xyz files
       xyzIndex = map fst $ filter (\x-> snd x == "zyx.") $ zip [0..] zyx
+      fileList2= map (fileList!!) xyzIndex
       aI    = map read2 arg
   case length xyzIndex of
      0    -> putStrLn $ "\n\nUse this script in a folder with xyz files !!!\n\n\n\n" ++ errorHelpMessage
      otherwise -> case length arg of
-                   2    -> do mapM_ (calculateMe bond aI "Bond") fileList
-                   3    -> do mapM_ (calculateMe angle aI "Angle") fileList 
-                   4    -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList
+                   2    -> do mapM_ (calculateMe bond aI "Bond") fileList2
+                   3    -> do mapM_ (calculateMe angle aI "Angle") fileList2 
+                   4    -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList2
                    otherwise  -> putStrLn $ "\nNAH !!\n\n" ++ errorHelpMessage
 
 calculateMe fun atomL funLabel file = do 

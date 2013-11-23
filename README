@@ -8,8 +8,10 @@ to install (you can use sandboxes just using cabal-dev instead of cabal):
 
  $ git clone git@github.com:acuzzio/BondAngleDihedral.git
  $ cd BondAngleDihedral/
- $ cabal configure
- $ cabal install missing_packages
+ $ cabal configure         
+ 
+ (in case of failure install missing packages, then cabal configure again)
+
  $ cabal build
  $ cp dist/build/BondAngleDihedral/BondAngleDihedral a_path_folder/
 
