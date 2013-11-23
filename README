@@ -10,9 +10,11 @@ Example:
  $ runhaskell BondAngleDihedral.hs 4 2 6 10 <- will give the dihedral between atoms 4 2 6 and 10
 
 
-download from git and then:
+to install:
 
+ $ git clone git@github.com:acuzzio/BondAngleDihedral.git
  $ cabal configure
+ $ cabal install missing_packages
  $ cabal build
  $ cp dist/build/BondAngleDihedral/BondAngleDihedral a_path_folder/
 
