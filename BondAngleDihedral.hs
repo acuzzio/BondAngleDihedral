@@ -33,7 +33,7 @@ calculateMe fun atomL funLabel file = do
             labelA= map (getRightAtoms atomL) label
             labelS= zipWith (++) (head labelA) (map show atomL)
             resu  = map (fun . getRightAtoms atomL) aa
-        putStrLn $ "File: " ++ file ++ " " ++ funLabel ++ ": " ++ (unwords labelS) ++ ":\n"
+        putStrLn $ file ++ " -> " ++ funLabel ++ " " ++ (unwords labelS) ++ "\n"
         putStrLn $ unlines $ map show resu
 
 transformInCoord :: [Geometry] -> [[Vec Double]]
