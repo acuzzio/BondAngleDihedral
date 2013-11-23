@@ -52,8 +52,10 @@ readXyz name = do
         a <- readFile name
         let aa = map words $ lines a
             atomnumber = read2 $ head.head $ aa
-            split      = chunksOf (atomnumber+2) aa 
-            geometries = map readGeom split
+            linenumber = atomnumber+2
+            split      = chunksOf (linenumber) aa 
+            rightSplit = filter (\x -> length x == linenumber) split
+            geometries = map readGeom rightSplit
         return geometries
 
 readGeom :: [[String]] -> Geometry
