@@ -21,16 +21,20 @@ main = do
        let fileList = lines files
            aI    = map read2 arg
        case length arg of
-          2       -> do calculateMe fileList bond aI
-          3       -> do calculateMe fileList angle aI 
-          4       -> do calculateMe fileList dihedral aI
+          2       -> do mapM_ (calculateMe bond aI "Bond") fileList
+          3       -> do mapM_ (calculateMe angle aI "Angle") fileList 
+          4       -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList
           otherwise  -> putStrLn errorHelpMessage
 
-calculateMe fileList fun atomL = do 
-            a <- mapM readXyz fileList
-            let aa    = map transformInCoord a
-                fond  = map (map (fun . getRightAtoms atomL)) aa
-            print fond
+calculateMe fun atomL funLabel file = do 
+        a <- readXyz file
+        let aa    = transformInCoord a
+            label = transformInAtomT a
+            labelA= map (getRightAtoms atomL) label
+            labelS= zipWith (++) (head labelA) (map show atomL)
+            resu  = map (fun . getRightAtoms atomL) aa
+        putStrLn $ "File: " ++ file ++ " " ++ funLabel ++ ": " ++ (unwords labelS) ++ ":\n"
+        putStrLn $ unlines $ map show resu
 
 transformInCoord :: [Geometry] -> [[Vec Double]]
 transformInCoord a = map (map getCoords) $ map getGeometry a
@@ -38,7 +42,7 @@ transformInCoord a = map (map getCoords) $ map getGeometry a
 transformInAtomT :: [Geometry] -> [[String]]
 transformInAtomT a = map (map getAtomtype) $ map getGeometry a
 
-getRightAtoms :: [Int] -> [Vec Double] -> [Vec Double]
+getRightAtoms :: [Int] -> [a] -> [a]
 getRightAtoms indexlist atomlist = let 
                rightindex = map pred indexlist
                in map (\x -> atomlist!!x) rightindex
