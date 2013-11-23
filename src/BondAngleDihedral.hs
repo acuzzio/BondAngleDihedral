@@ -3,7 +3,7 @@ import System.Environment
 import Data.List.Split
 import Control.Applicative
 
-errorHelpMessage = "\nNAH !!!!\n\nThis scripts works with 2, 3 or 4 argouments.\nYou have to launch it in a folder that contains xyz geometry or dynamics files and then give the index of 2,3 or 4 atoms.\nExample:\n\n $ BondAngleDihedral 1 2  <- will give the bond length between atoms 1 and 2\n $ BondAngleDihedral 4 2 6   <- will give the angle between atoms 4,2 and 6\n $ BondAngleDihedral 4 2 6 10 <- will give the dihedral between atoms 4 2 6 and 10\n\n"
+errorHelpMessage = "This scripts works with 2, 3 or 4 argouments.\nYou have to launch it in a folder that contains xyz geometry or dynamics files and then give the index of 2,3 or 4 atoms.\nExample:\n\n $ BondAngleDihedral 1 2  <- will give the bond length between atoms 1 and 2\n $ BondAngleDihedral 4 2 6   <- will give the angle between atoms 4,2 and 6\n $ BondAngleDihedral 4 2 6 10 <- will give the dihedral between atoms 4 2 6 and 10\n\n"
 
 data Geometry = Geometry {getAtomnumber :: Int
                          ,getGeometry   :: [Atom]
@@ -16,25 +16,29 @@ data Atom     = Atom     {getAtomtype   :: String
 newtype Vec a = Vec {runVec :: [a]} deriving (Show, Read, Eq)
 
 main = do 
-       arg <- getArgs
-       files <- readShell "ls *.xyz"
-       let fileList = lines files
-           aI    = map read2 arg
-       case length arg of
-          2       -> do mapM_ (calculateMe bond aI "Bond") fileList
-          3       -> do mapM_ (calculateMe angle aI "Angle") fileList 
-          4       -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList
-          otherwise  -> putStrLn errorHelpMessage
+  arg <- getArgs
+  files <- readShell "ls"
+  let fileList = lines files
+      zyx      = map (take 4) $ map reverse fileList -- dull but works -> to filter xyz files
+      xyzIndex = map fst $ filter (\x-> snd x == "zyx.") $ zip [0..] zyx
+      aI    = map read2 arg
+  case length xyzIndex of
+     0    -> putStrLn $ "\n\nUse this script in a folder with xyz files !!!\n\n\n\n" ++ errorHelpMessage
+     otherwise -> case length arg of
+                   2    -> do mapM_ (calculateMe bond aI "Bond") fileList
+                   3    -> do mapM_ (calculateMe angle aI "Angle") fileList 
+                   4    -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList
+                   otherwise  -> putStrLn $ "\nNAH !!\n\n" ++ errorHelpMessage
 
 calculateMe fun atomL funLabel file = do 
-        a <- readXyz file
-        let aa    = transformInCoord a
-            label = transformInAtomT a
-            labelA= map (getRightAtoms atomL) label
-            labelS= zipWith (++) (head labelA) (map show atomL)
-            resu  = map (fun . getRightAtoms atomL) aa
-        putStrLn $ file ++ " -> " ++ funLabel ++ " " ++ (unwords labelS) ++ "\n"
-        putStrLn $ unlines $ map show resu
+   a <- readXyz file
+   let aa     = transformInCoord a
+       label  = transformInAtomT a
+       labelA = map (getRightAtoms atomL) label
+       labelS = zipWith (++) (head labelA) (map show atomL)
+       resu   = map (fun . getRightAtoms atomL) aa
+   putStrLn $ file ++ " -> " ++ funLabel ++ " " ++ (unwords labelS) ++ "\n"
+   putStrLn $ unlines $ map show resu
 
 transformInCoord :: [Geometry] -> [[Vec Double]]
 transformInCoord a = map (map getCoords) $ map getGeometry a
