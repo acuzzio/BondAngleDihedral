@@ -8,3 +8,15 @@ Example:
  $ runhaskell BondAngleDihedral.hs 1 2  <- will give the bond length between atoms 1 and 2
  $ runhaskell BondAngleDihedral.hs 4 2 6   <- will give the angle between atoms 4,2 and 6
  $ runhaskell BondAngleDihedral.hs 4 2 6 10 <- will give the dihedral between atoms 4 2 6 and 10
+
+
+download from git and then:
+
+ $ cabal configure
+ $ cabal build
+ $ cp dist/build/BondAngleDihedral/BondAngleDihedral a_path_folder/
+
+
+
+Enjoy !!!
+
