@@ -1,1 +1,10 @@
 This is a simple routine to extract Bonds Angles and Dihedral from xyz formatted geometry or dynamics files
+
+
+This scripts works with 2, 3 or 4 argouments.
+You have to launch it in a folder that contains xyz geometry or dynamics files and then give the index of 2,3 or 4 atoms.
+Example:
+
+ $ BondAngleDihedral 1 2  <- will give the bond length between atoms 1 and 2
+ $ BondAngleDihedral 4 2 6   <- will give the angle between atoms 4,2 and 6
+ $ BondAngleDihedral 4 2 6 10 <- will give the dihedral between atoms 4 2 6 and 10
