@@ -4,9 +4,10 @@ This is a simple routine to extract Bonds Angles and Dihedral from xyz formatted
 This scripts works with 2, 3 or 4 argouments.
 You have to launch it in a folder that contains xyz geometry or dynamics files and then give the index of 2,3 or 4 atoms.
 
-to install:
+to install (you can use sandboxes just using cabal-dev instead of cabal):
 
  $ git clone git@github.com:acuzzio/BondAngleDihedral.git
+ $ cd BondAngleDihedral/
  $ cabal configure
  $ cabal install missing_packages
  $ cabal build
