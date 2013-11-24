@@ -30,6 +30,7 @@ main = do
                    3    -> do mapM_ (calculateMe angle aI "Angle") fileList2 
                    4    -> do mapM_ (calculateMe dihedral aI "Dihedral") fileList2
                    otherwise  -> putStrLn $ "\nNAH !!\n\n" ++ errorHelpMessage
+--                   otherwise  -> do mapM_ (calculateMe bond [3,4] "Bond") fileList2
 
 calculateMe fun atomL funLabel file = do 
    a <- readXyz file
@@ -74,6 +75,7 @@ readAtom atomL = let label  = atomL !! 0
                  in Atom label (Vec coords)
 
 read2 x = read x :: Int
+
 read3 x = read x :: Double
 
 -- ================> Internal coords <==============
