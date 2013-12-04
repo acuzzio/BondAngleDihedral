@@ -6,7 +6,8 @@ You have to launch it in a folder that contains xyz geometry or dynamics files a
 
 to install (you can use sandboxes just using cabal-dev instead of cabal):
 
- $ git clone git@github.com:acuzzio/BondAngleDihedral.git
+Download and extract package
+
  $ cd BondAngleDihedral/
  $ cabal configure         
  
